@@ -1,8 +1,8 @@
 # provider
 provider "aws" {
   region = "us-east-1"
-  access_key = "AKIAVP2HFGCVKB2QFXFQ"
-  secret_key = "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"
+  access_key = "xxx"
+  secret_key = "xxx"
 
   #assume_role {
   #  role_arn     = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
