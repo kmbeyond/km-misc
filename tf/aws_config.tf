@@ -1,8 +1,10 @@
- # provider
+# provider
 provider "aws" {
   region = "us-east-1"
-  access_key = ""
-  secret_key = ""
+  profile = "usr-admin-1"
+
+  #access_key = ""
+  #secret_key = ""
 
   #assume_role {
   #  role_arn     = "arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME"
@@ -10,13 +12,4 @@ provider "aws" {
   #  external_id  = "EXTERNAL_ID"
   #}
 }
-
-
-variable "default_tags" {
-  type = map
-  default = {
-    "Created By" = "km tf"
-  }
-}
-
 
