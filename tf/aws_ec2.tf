@@ -1,4 +1,4 @@
-
+/*
 #----AMI------
 data "aws_ami" "amz-linux-free-tier" {
   most_recent = true
@@ -50,3 +50,4 @@ resource "aws_instance" "km-tf-ec2-01" {
 output "amz_linux_instance_public_ip" {
   value = aws_instance.km-tf-ec2-01.public_ip
 }
+*/

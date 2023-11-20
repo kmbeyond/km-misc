@@ -12,3 +12,8 @@ output "current_caller_arn" {
 output "current_caller_access_id" {
   value = "${data.aws_caller_identity.current.user_id}"
 }
+
+
+output "default_vpc" {
+  value = var.default_vpc
+}

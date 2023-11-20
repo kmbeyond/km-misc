@@ -6,9 +6,7 @@ variable "default_vpc" {
  type = string
 }
 
-output "default_vpc" {
-  value = var.default_vpc
-}
+
 
 
 variable "default_tags" {
@@ -16,4 +14,14 @@ variable "default_tags" {
   default = {
     "Created By" = "km tf"
   }
+}
+
+variable "user_group_training" {
+  type = string
+  default = "training"
+}
+
+variable "user10" {
+  type = string
+  default = "km10"
 }
