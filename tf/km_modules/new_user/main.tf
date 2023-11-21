@@ -12,3 +12,6 @@ variable "user_tags" {
  type = map(string)
 }
 
+output "user_arn" {
+  value = aws_iam_user.new_user.arn
+}
