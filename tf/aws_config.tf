@@ -27,10 +27,10 @@ terraform {
   #}
 
   #(optional) location where to copy/save state to backend
-  backend "s3" {
-    bucket = "kiranbkt-development" #MUST be existing bucket
-    key = "tf/learning/tf_state_2023-11.tfstate"
-    region = "us-east-1"
+  #backend "s3" {
+  #  bucket = "kiranbkt-development" #MUST be existing bucket
+  #  key = "tf/learning/tf_state_2023-11.tfstate"
+  #  region = "us-east-1"
   #  dynamodb_table = "tf-state-lock"
-  }
+  #}
 }
