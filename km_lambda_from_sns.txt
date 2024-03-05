@@ -1,0 +1,30 @@
+
+-------------------------------code
+import json, traceback
+#import boto3
+
+def lambda_handler(event, context):
+    try:
+        print(f"Event={event}")
+        sns_message = event['Records'][0]['Sns']['Message']
+        #print(f"SNS Message: {sns_message}")
+        parsed_message = json.loads(sns_message)
+        bucket_name = parsed_message['Records'][0]['s3']['bucket']['name']
+        key = parsed_message['Records'][0]['s3']['object']['key']
+        print(f"File event: s3://{bucket_name}/{key}")
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Lambda executed successfully')
+        }
+    except Exception:
+        #sns_client = boto3.client("sns")
+        error_dtl = str(traceback.format_exc())
+        print(f"EXCEPTION: {error_dtl}")
+        sns_topic_arn = "arn:aws:sns:us-east-1:111:km_test_sns_east_1"
+        msg_subject = "Exception Processing event from "+event_source
+        msg_body = f"Error Message = {error_dtl}"
+        #GOES IN LOOP: sns_client.publish(TopicArn=sns_topic_arn, Message=msg_body, Subject=msg_subject)
+        raise SystemExit(2)
+
+
