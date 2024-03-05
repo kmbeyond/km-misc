@@ -1,0 +1,74 @@
+
+
+---------Trust Relationship
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+
+-------------------------policy: km_lambda_execution_policy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:logs:us-east-1:111:*"
+            ]
+        }
+    ]
+}
+
+
+------------------------Policy: km_policy_access_to_s3
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AccessToS3",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::km-test-bucket",
+                "arn:aws:s3:::km-test-bucket/*"
+            ]
+        }
+    ]
+}
+
+
+--------------------------Policy: km_policy_access_sqs
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:GetQueueAttributes"
+            ],
+            "Resource": "arn:aws:sqs:us-east-1:111:km_test_sqs_east_1"
+        }
+    ]
+}
+
+----------------------------Policy:
+
+
+
