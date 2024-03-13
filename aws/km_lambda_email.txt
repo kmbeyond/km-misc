@@ -1,0 +1,104 @@
+
+
+#--------------km_lambda_email
+import json
+import boto3
+#import requests
+import urllib3
+
+def email_conf():
+    client =boto3.client("secretsmanager")
+    response = client.get_secret_value(SecretId='km_conf/email_conf')
+    conf_val = json.loads(response['SecretString'])
+    return conf_val
+
+def call_email_api(email_subject, email_body, email_recipients):
+     config=email_conf()
+     TENANT_ID = config['tenant_id']
+     #Use the redirect URL to create a token
+     token_url = f"https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0/token"
+
+     #Token
+     print("Acquire token")
+     params = {
+         'grant_type': 'password',
+         'client_id': config['client_id'],
+         'client_secret': config['client_secret'],
+         'scope': 'https://graph.microsoft.com/.default',
+         'username': config['user_name'],
+         'password': config['password']
+     }
+     #response = requests.post(token_url, data=params) #requests to add in zip
+     # Creating a PoolManager instance for sending requests.
+     http = urllib3.PoolManager()
+     response = http.request('POST', token_url, fields=params)
+     
+     #print(f"Response Status: " + str(response.status))
+     #print(f"Response Headers: " + str(response.headers))
+     #print(f"Response Data: " + str(response.data))
+     #print(f"Response JSON: " + str(json.loads(response.data)))
+     
+     #token = response.json().get('access_token') #The HTTPResponse object in urllib3 did not have a .json() method at the time this code was written - 20220621
+     token = json.loads(response.data)['access_token']
+     #print(f"Token: " + token)
+
+     #--SendEmail
+     headers = {'Authorization': 'Bearer ' + token, 'content-type': 'application/json'}
+     message_data = {
+         "message": {
+             "subject": email_subject,
+             "body": {
+                 "contentType": "HTML",
+                 "content": email_body
+             },
+             "toRecipients": [
+                 {
+                     "emailAddress": {
+                         "address": address
+                     }
+                 } for address in email_recipients
+
+             ]
+         }
+     }
+     #response = requests.post('https://graph.microsoft.com/v1.0/me/sendMail', data=json.dumps(message_data), headers=headers) #requests does not work in AWS
+
+     response = http.request(method='POST', url='https://graph.microsoft.com/v1.0/me/sendMail', body=json.dumps(message_data), headers=headers)
+     print(f"Response Data: " + str(response.data))
+
+def lambda_handler(event, context):
+    #body = json.loads(event['body'])
+
+    arg_email_subject = event["arg_email_subject"]
+    arg_email_body = event["arg_email_body"]
+    arg_email_recipients = event["arg_email_recipients"]
+
+    ##Call email function
+    call_email_api(arg_email_subject , arg_email_body, [email.strip() for email in arg_email_recipients.split(',')] )
+    
+    return {
+        'statusCode': 200,
+        'headers': {'Content-Type': 'application/json'},
+        'body': "Email has been successfully sent"
+        
+    }
+
+
+
+
+#--------------------- test event payload
+-----lambda;079xxx:km_lambda_email
+{
+  "arg_email_subject": "Test subject-DEV-834724492794",
+  "arg_email_recipients": "km@km.com",
+  "arg_email_body": "Call from Lambda:<br><table border=1 cellspacing=0><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> "
+}
+
+--no need of body element
+{
+  "body": "{ \"arg_email_subject\": \"Test subject\",  \"arg_email_recipients\": \"km@km.com\", \"arg_email_body\": \"Call from Lambda <br><table border=1><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> \" }"
+}
+
+-----API Gateway: 079xxx:km_api_email
+{ "arg_email_subject": "Test subject", "arg_email_recipients": "km@km.com", "arg_email_body": "Call from API gateway (DEV):<br><table border=1><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> " }
+
