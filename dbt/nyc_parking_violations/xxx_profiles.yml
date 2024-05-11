@@ -1,0 +1,13 @@
+nyc_parking_violations:
+  outputs:
+    dev:
+      type: duckdb
+      path: '/home/km/km/km_practice/git_repo/km-misc/dbt/data/nyc_parking_violations.db'
+      threads: 1
+
+    prod:
+      type: duckdb
+      path: prod.duckdb
+      threads: 4
+
+  target: dev

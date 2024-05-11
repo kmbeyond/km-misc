@@ -1,0 +1,37 @@
+
+version: 2
+
+models:
+  - name: my_first_dbt_model
+    description: "A starter dbt model"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: my_second_dbt_model
+    description: "A starter dbt model"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: plates_with_max_violations
+    description: Number Plates having most violations
+    columns:
+      - name: plate_id
+        description: 'Plate Id of violated vehicle'
+      - name: violations_count
+        description: Overall Violations count
+
+  - name: yearly_violations_count
+    description: Violations count per year from high to low
+    columns:
+      - name: year
+        description: 'Year of the violations'
+      - name: violations_count
+        description: Overall Violations count
