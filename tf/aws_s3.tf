@@ -21,7 +21,8 @@ data "aws_iam_policy_document" "km_s3_policy" {
         condition {
             test = "StringLike"
             variable = "s3:prefix"
-            values = [ "Finance/*" ]
+            #values = [ "Finance/" ]
+            values = [ "Finance/*" ]   #ALSO WORKS
         }
     }
 
