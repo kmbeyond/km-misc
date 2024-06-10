@@ -33,7 +33,8 @@ data "aws_iam_policy_document" "km_s3_policy" {
             identifiers = [ "arn:aws:iam::377569489066:user/km_finance" ]
         }
         actions = [ "s3:GetObject" ]
-        resources = [ "${aws_s3_bucket.km_s3_tf.arn}/Finance/*" ]
+        #resources = [ "${aws_s3_bucket.km_s3_tf.arn}/Finance/*" ]
+        resources = [ format("%s/%s", aws_s3_bucket.km_s3_tf.arn, "Finance/*") ]
     }
 
 }
