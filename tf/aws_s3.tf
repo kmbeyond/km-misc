@@ -38,4 +38,20 @@ data "aws_iam_policy_document" "km_s3_policy" {
         resources = [ format("%s/%s", aws_s3_bucket.km_s3_tf.arn, "Finance/*") ]
     }
 
+    statement {
+        sid = "EnforceHTTPSConnections"
+        effect = "Deny"
+        principals {
+            type = "AWS"
+            identifiers = [ "*" ]
+        }
+        actions = [ "s3:*" ]
+        resources = [ "${aws_s3_bucket.km_s3_tf.arn}/*" ]
+        condition {
+            test = "Bool"
+            variable = "aws:SecureTransport"
+            values = [ "false" ]
+        }
+    }
+
 }
