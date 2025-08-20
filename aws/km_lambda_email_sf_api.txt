@@ -1,7 +1,7 @@
 
 
 #--------------km_lambda_email
-import json, urllib3
+import json, urllib3, traceback
 import boto3
 #NOT NEEDED: import requests
 
@@ -68,10 +68,11 @@ def call_email_api(email_subject, email_body, email_recipients):
 
 def lambda_handler(event, context):
     #body = json.loads(event['body'])
-
-    arg_email_subject = event["arg_email_subject"]
-    arg_email_body = event["arg_email_body"]
-    arg_email_recipients = event["arg_email_recipients"]
+  try:
+    data = event['data'][0]
+    arg_email_subject = data[3] #event["arg_email_subject"]
+    arg_email_body = data[2]  #event["arg_email_body"]
+    arg_email_recipients = data[1]  #event["arg_email_recipients"]
 
     ##Call email function
     call_email_api(arg_email_subject , arg_email_body, [email.strip() for email in arg_email_recipients.split(',')] )
@@ -82,22 +83,34 @@ def lambda_handler(event, context):
         'body': "Email has been successfully sent"
 
     }
-
+  except Exception:
+     error_dtl = str(traceback.format_exc())
+     print('ERROR'+error_dtl)
+     return {
+      "data": [[0, "FAILED"]]
+     }
 
 
 
 #--------------------- test event payload
 -----lambda;079xxx:km_lambda_email
+
 {
-  "arg_email_subject": "Test subject-DEV-834724492794",
-  "arg_email_recipients": "km@km.com",
-  "arg_email_body": "Call from Lambda:<br><table border=1 cellspacing=0><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> "
+  "data": [
+    [0, "km@km.com", "Test subject-DEV-834724492794", "Call from Lambda:<br><table border=1 cellspacing=0><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> " ]
+    ]
 }
 
---no need of body element
-{
-  "body": "{ \"arg_email_subject\": \"Test subject\",  \"arg_email_recipients\": \"km@km.com\", \"arg_email_body\": \"Call from Lambda <br><table border=1><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> \" }"
-}
 
 -----API Gateway: 079xxx:km_api_email
-{ "arg_email_subject": "Test subject", "arg_email_recipients": "km@km.com", "arg_email_body": "Call from API gateway (DEV):<br><table border=1><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> " }
+{
+  "data": [
+    [0, "km@km.com", "Test subject-DEV-834724492794", "Call from Lambda:<br><table border=1 cellspacing=0><tr><th>header1<th>header2</tr><tr><td>data1<td>data2</table><br> " ]
+    ]
+}
+
+
+#---------------------
+Create API Integration
+
+Create External Function
