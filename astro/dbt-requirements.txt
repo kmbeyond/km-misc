@@ -1,0 +1,2 @@
+dbt-snowflake
+dbt-databricks==1.10.6
