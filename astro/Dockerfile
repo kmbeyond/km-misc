@@ -17,7 +17,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git
 
-
+RUN cd /usr/local/airflow/
 RUN python3 -m venv dbt_venv
 RUN . dbt_venv/bin/activate
 #RUN pip install --no-cache-dir -r dbt-requirements.txt   #
