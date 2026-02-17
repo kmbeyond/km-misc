@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+ - name: src_km_test
+   database: KMDB
+   schema: KM_SCHEMA
+   tables:
+    - name: km_test_dates
