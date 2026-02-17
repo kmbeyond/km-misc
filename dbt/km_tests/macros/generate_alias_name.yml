@@ -1,0 +1,10 @@
+{% macro default__generate_alias_name (custom_alias_name=none, node=none) -%}
+    {# Supports model names with embedded schema #}
+
+    {%- if custom_alias_name -%}
+        {{ custom_alias_name | trim }}
+    {%- else -%}
+        {{ node.name.split(".")[1] if node.name.split(".")|length == 2 else node.name }}
+    {%- endif -%}
+
+{%- endmacro %}
