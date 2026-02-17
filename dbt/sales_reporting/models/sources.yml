@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+ - name: km_mysql_mycompany
+   database: mycompany
+   schema: mycompany
+   tables:
+    - name: T_PRODUCTS
