@@ -1,0 +1,4 @@
+{% macro default__generate_schema_name(custom_schema_name, node) -%}
+  {# Ignore custom_schema_name we derive from the model name #}
+  {{ node.name.split(".")[0] if node.name.split(".")|length == 2 else target.schema }}
+{%- endmacro %}
