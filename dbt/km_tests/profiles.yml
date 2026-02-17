@@ -1,0 +1,29 @@
+config:
+  send_anonymous_usage_stats: False
+
+km_test_dbx:
+  outputs:
+    snowflake:
+      type: snowflake
+      account: abc123.us-east-1
+      database: KMDB
+      schema: km_schema
+      role: KM_ROLE
+      threads: 10
+      user: km
+      warehouse: TRANSFORM__S__WH
+      password:
+      private_key_path: /Users/km/km/keys/rsa_key.p8
+      private_key_passphrase: null
+    databricks:
+      type: databricks
+      host: kmdev.cloud.databricks.com
+      http_path: /sql/1.0/warehouses/123abc
+      schema: km_schema
+      catalog: km_catalog
+      threads: 1
+      token: "abcdefgh12345"
+      client_id:
+      client_secret:
+
+  target: databricks
