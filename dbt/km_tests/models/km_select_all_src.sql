@@ -1,10 +1,10 @@
 {{
   config(
-    materialized=materialization('view')
+    materialized='view'
   )
 }}
 
 {# ,post_hook="drop view if exists {{ this }}" #}
 
-SELECT {{ select_all_with_alias('src_km_test', 'km_test_dates') }}
- from {{ source('src_km_test', 'km_test_dates') }}
+SELECT {{ select_columns_from_src('src_duckdb', 'data_customers') }}
+ from {{ source('src_duckdb', 'data_customers') }}

@@ -1,7 +1,5 @@
-config:
-  send_anonymous_usage_stats: False
 
-km_test_dbx:
+km_tests:
   outputs:
     snowflake:
       type: snowflake
@@ -25,5 +23,8 @@ km_test_dbx:
       token: "abcdefgh12345"
       client_id:
       client_secret:
-
-  target: databricks
+    duckdb:
+      type: duckdb
+      path: '/home/km/km/km_practice/git_repo/km-misc/dbt/data/km_tests.db'
+      threads: 1
+  target: duckdb

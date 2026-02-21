@@ -1,8 +1,8 @@
 version: 2
 
 sources:
- - name: src_km_test
-   database: KMDB
-   schema: KM_SCHEMA
+ - name: src_duckdb
+   database: km_tests
+   schema: main
    tables:
-    - name: km_test_dates
+    - name: data_customers

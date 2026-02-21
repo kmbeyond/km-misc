@@ -1,1 +1,1 @@
-select * from kmdb.km_schema.table1
+select * from km_tests.main.data_customers

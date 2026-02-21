@@ -23,6 +23,8 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+flags:
+  send_anonymous_usage_stats: False
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -33,8 +35,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   km_tests:
     +enabled: true
-    tags: ["km"]
-    +copy_grants: true
-    km_tests:
-      km_model_dev:
-        +enabled: "{{ env_var('DBT_ENV') == 'DEV' }}"
+    +tags: ["km"]
+
